@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body>
+<!-- simplified widget to host on Netlify/GitHub Pages -->
+<div id="chatWidget">
+  <button onclick="openChat()">Open Chat</button>
+  <div id="chat" style="display:none">
+    <div id="log"></div>
+    <input id="q" placeholder="Nhập câu hỏi...">
+    <button onclick="send()">Gửi</button>
+  </div>
+</div>
+
+<script>
+const BACKEND = "https://YOUR_RENDER_URL/chat"; // <- replace
+function openChat(){ document.getElementById("chat").style.display='block'; }
+async function send(){
+  const q = document.getElementById("q").value;
+  if(!q) return;
+  const log = document.getElementById("log");
+  log.innerHTML += "<div><b>Bạn:</b> "+q+"</div>";
+  document.getElementById("q").value = "";
+  const r = await fetch(BACKEND, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ question:q })});
+  const j = await r.json();
+  log.innerHTML += "<div><b>Bot:</b> "+(j.answer||j.error||'Lỗi')+"</div>";
+}
+</script>
+</body>
+</html>
