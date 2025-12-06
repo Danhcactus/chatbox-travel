@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: chatbox-travel
+    env: node
+    plan: free
+    buildCommand: "npm install"
+    startCommand: "npm start"
+    envVars:
+      - key: GEMINI_KEY
+        sync: false
